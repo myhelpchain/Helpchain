@@ -1,0 +1,180 @@
+There are several additional improvements and corrections that need to be implemented across the application. Please follow the instructions carefully and maintain the current professional design standard of the platform.
+
+---
+
+### 1. “How It Works” Section – Use 2D Character Illustrations
+
+The images currently used in the **“How It Works”** section are good, but they should be replaced with **2D character illustrations** instead of generic images.
+
+The goal is to make the platform feel more friendly, visual, and easy to understand.
+
+Please replace the current images with **simple 2D illustration-style characters** that visually represent the steps.
+
+Examples of what these illustrations should show:
+
+* Someone posting a task
+* Someone browsing tasks
+* Someone completing a task
+* Someone receiving help
+
+These images can either be:
+
+* Found online (preferred option), or
+* Generated if necessary.
+
+Choose illustrations that **fit naturally inside the containers/divs already used in the “How It Works” section.**
+
+---
+
+### 2. “Browse Popular Tasks” Section – Add Placeholder Images
+
+In the **Browse Popular Tasks** section, every task card should include a **placeholder image**.
+
+These should be **realistic images that represent the type of task**, similar to the images already used in the **Find Tasks page**.
+
+The idea is to maintain visual consistency across the platform.
+
+So the same style of images used in **Find Tasks listings** should also be used here.
+
+---
+
+### 3. Currency Must Be in Nigerian Naira
+
+All prices on the platform should be displayed in **Nigerian Naira (₦)**.
+
+Currently some prices are shown in **dollars**, which should not happen.
+
+Please update the entire application so that **all monetary values are displayed in Naira**.
+
+Examples:
+
+* ₦5,000
+* ₦10,500
+* ₦2,000
+
+This change should apply to:
+
+* Task listings
+* Payment displays
+* Task rewards
+* Anywhere money appears in the system.
+
+---
+
+### 4. Category Dropdown Must Be Scrollable
+
+On the **Find Tasks page**, users can filter tasks using the **Category dropdown**.
+
+When the list of categories becomes long, users must be able to **scroll within the dropdown menu**.
+
+This prevents the dropdown from extending beyond the visible screen.
+
+Important details:
+
+* The **All Categories dropdown must be scrollable**.
+* Users should be able to scroll inside the dropdown to view all categories.
+* This prevents users from needing to resize their screen to see all options.
+
+Note:
+
+The **“All Types” dropdown does NOT need modification.**
+
+Only the **Category dropdown** needs to be scrollable.
+
+---
+
+### 5. Increase the Number of Categories
+
+The existing categories are good, but we need **more variety**.
+
+Please add **5 to 6 additional categories**.
+
+These categories should fit naturally within the HelpChain ecosystem.
+
+Examples could include:
+
+* Delivery & Errands
+* Home Repairs
+* Cleaning Services
+* Tech Support
+* Moving Assistance
+* Personal Assistance
+
+The goal is to make the platform feel **more complete and realistic**.
+
+---
+
+### 6. Fix the Hero Section (Landing Page Image)
+
+The **hero section currently uses multiple images**, which is not correct.
+
+The hero section should use **one strong landing page image**, not multiple small images.
+
+Please replace the current images with **one main visual that represents the HelpChain platform.**
+
+The image should communicate the idea of:
+
+* People helping each other
+* Community-driven assistance
+* Posting and completing real-world tasks
+
+This hero image should be placed in a **clean and professional layout that fits the landing page design.**
+
+Make sure it looks polished and does not reduce the professional feel of the website.
+
+---
+
+### 7. Continue Overhauling the Other Pages
+
+As mentioned earlier, the goal is to **overhaul every page in the application**.
+
+Please continue improving the rest of the platform using the same design style that has already been started.
+
+This includes:
+
+* Maintaining consistent layout styles
+* Updating icons where necessary
+* Ensuring visual consistency across all pages
+* Making the interface modern and clean
+
+This process should cover:
+
+* Landing page
+* Task pages
+* Profile pages
+* Find Tasks page
+* Footer and navigation areas
+
+---
+
+### 8. Logo Consistency
+
+The **HelpChain logo must be consistent everywhere on the platform.**
+
+Requirements:
+
+* The logo should appear **in a circular format**
+* The same logo style must be used across the entire application
+* Do not replace it with random icons
+
+Anywhere the platform branding appears, the **same HelpChain logo must be used.**
+
+Maintain the **same icon style that is already being used in the design system.**
+
+Do not change the design style or introduce different icon styles.
+
+---
+
+### 9. Maintain Professional Quality
+
+While implementing these changes:
+
+* Maintain the **professional look of the platform**
+* Ensure all UI elements are **clean and well aligned**
+* Avoid breaking the current design structure
+
+If necessary, you can **research design ideas online** to improve layout and presentation, but the final implementation must remain consistent with the HelpChain interface.
+
+---
+
+Please implement all of the above updates carefully before moving on to additional improvements.

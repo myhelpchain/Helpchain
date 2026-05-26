@@ -1,0 +1,10 @@
+project_id = "ravrqyznbypvgotjdhev"
+
+[functions.wallet-api]
+verify_jwt = false
+
+[functions.paystack-webhook]
+verify_jwt = false
+
+[functions.task-api]
+verify_jwt = false

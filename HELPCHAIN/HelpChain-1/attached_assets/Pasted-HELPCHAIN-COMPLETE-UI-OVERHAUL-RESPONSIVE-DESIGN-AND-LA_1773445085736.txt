@@ -1,0 +1,117 @@
+HELPCHAIN — COMPLETE UI OVERHAUL, RESPONSIVE DESIGN, AND LANDING PAGE REDESIGN
+
+I want you to completely redesign and significantly improve the entire user interface of this application.
+
+Before making any changes, carefully go through the entire application and understand what the platform is about. Read everything within the app and understand how each feature works.
+
+The platform is called HelpChain. It is a task marketplace where users can post tasks and workers can accept and complete those tasks in exchange for payment.
+
+Study all sections of the platform including the landing page, onboarding flow, task feed, task pages, messaging system, wallet interface, profiles, and navigation structure so you fully understand the purpose of the product.
+
+After understanding the application, begin a full UI overhaul.
+
+Right now the interface feels like a sloppy AI-generated website. The design must be significantly improved so that the platform looks like a professionally designed startup product rather than a basic AI website.
+
+The new interface should be modern, clean, balanced, visually appealing, and extremely polished.
+
+Spacing, typography, layout structure, and component design must all be improved. Every screen should feel intentional and well designed.
+
+---
+
+UI DESIGN DIRECTION
+
+I have attached reference images that show the level of design quality I want.
+
+Use those images as inspiration, but the final design must be even better than the references.
+
+There is a specific green color shown in the reference images that I want used as the primary brand color throughout the interface.
+
+Use this green color for important UI elements such as buttons, highlights, action indicators, and navigation states while keeping the rest of the interface clean using neutral colors such as white, gray, and dark text.
+
+The design should feel modern, premium, and trustworthy.
+
+---
+
+RESPONSIVE DESIGN
+
+The entire platform must be fully responsive and work perfectly across all devices.
+
+This includes:
+
+Mobile phones
+Tablets
+Desktop computers
+
+The layout must automatically adapt to the screen size.
+
+Mobile users should experience an interface that feels like a mobile application.
+
+Desktop users should see a more advanced dashboard-style interface.
+
+The experience must feel smooth, intuitive, and professional on every device.
+
+---
+
+LANDING PAGE (HIGHEST PRIORITY)
+
+The landing page is currently not good enough and must be completely redesigned.
+
+This is the most important page in the entire platform.
+
+The landing page should clearly explain what HelpChain is, how it works, and why people should use it.
+
+The page must look impressive, modern, and visually strong.
+
+It should include strong sections such as:
+
+Hero section explaining HelpChain
+How the platform works
+Key features of the platform
+Visual examples of tasks and activity
+Trust and credibility elements
+Clear call-to-action buttons
+
+The landing page should immediately make users feel confident about the platform.
+
+---
+
+ONBOARDING EXPERIENCE
+
+The onboarding flow should be improved significantly.
+
+Add more onboarding slides that clearly explain what HelpChain does and how the platform works.
+
+The onboarding experience should be smooth, informative, and visually clean.
+
+Each slide should explain different aspects of the platform such as:
+
+Posting tasks
+Accepting tasks
+Completing work
+Receiving payments
+
+The onboarding flow should help new users quickly understand the platform.
+
+---
+
+LOGIN AND ACCOUNT CREATION
+
+The login page and account creation pages should also be redesigned.
+
+These pages must look modern, clean, and professional.
+
+Improve the layout, spacing, typography, and visual hierarchy.
+
+The experience should feel smooth and trustworthy so users feel confident creating accounts on the platform.
+
+---
+
+FINAL GOAL
+
+The final interface must look like a high-quality startup product built by professional designers.
+
+It should no longer look like a basic AI-generated website.
+
+The design must be visually impressive, modern, and extremely polished while remaining simple and easy to use.
+
+The entire platform must be fully responsive and provide a top-tier experience on both mobile and desktop devices.

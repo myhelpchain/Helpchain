@@ -1,0 +1,581 @@
+HELPCHAIN – FULL PAYMENT, WALLET & ESCROW SYSTEM MASTER DOCUMENT
+(Instructional Blueprint for Replit Agent)
+This document exists to explain, in complete and exhaustive detail, how the HelpChain platform handles money, user wallets, escrow, deposits, withdrawals, verification, internal accounting, system logic, and safety constraints. This is the most important part of the entire platform. The payment and escrow system is what makes HelpChain fundamentally different from casual gig platforms or simple marketplaces. If this system is implemented incorrectly, the platform fails regardless of UI quality, features, or traffic. Therefore, this document must be followed strictly, logically, and conservatively. No assumptions, shortcuts, or guesswork should be made. Every rule exists for a reason.
+HelpChain is a service marketplace and work coordination platform where real people request help, provide help, and exchange value safely. Money must never move without logic. Money must never be assumed. Money must never be credited without verification. The platform does not “trust” frontend actions or user claims. The platform trusts only backend-confirmed events, verified transactions, and internally recorded balances.
+The core principle of HelpChain’s payment system is this: Paystack only confirms that money entered or left the system. HelpChain itself decides what that money represents, who owns it, whether it is locked, whether it is released, and when it is withdrawable. Paystack is a payment rail. HelpChain is the financial logic engine.
+________________________________________
+CORE ARCHITECTURE OVERVIEW
+HelpChain operates on a wallet-based internal ledger system. Every user has an internal wallet maintained by the HelpChain backend database. This wallet is not a Paystack wallet. It is not a bank account. It is an internal balance representation that tracks the user’s claim on funds held by HelpChain.
+All real money physically lives inside the HelpChain Paystack merchant account. Users never directly hold funds in Paystack. Instead, users interact with balances stored in HelpChain’s database, which are adjusted based on verified Paystack events.
+There are three primary balance states every wallet must support:
+•	Available Balance (funds the user can freely use)
+•	Escrow Balance (funds locked in active jobs or disputes)
+•	Total Balance (available + escrow, for display only)
+The system must strictly separate these balances. Escrow funds are not spendable and not withdrawable until explicitly released.
+________________________________________
+PAYSTACK INTEGRATION REQUIREMENTS
+The platform uses an already existing Paystack account owned by HelpChain. This account must support:
+•	Live API access
+•	Bank transfers
+•	Dedicated Virtual Accounts (DVA)
+•	Transfers (payouts)
+•	Webhooks
+The Replit agent must never request Paystack login credentials. Only API-level access is used.
+The backend will store:
+•	Paystack Secret Key (server-side only)
+•	Paystack Public Key (frontend safe)
+•	Webhook verification secret
+•	Paystack account configuration flags
+All Paystack API calls must originate from the backend. The frontend must never communicate directly with Paystack for balance changes or wallet updates.
+________________________________________
+USER DEPOSIT FLOW (DETAILED END-TO-END)
+When a user wants to fund their HelpChain wallet, the process must follow these exact steps.
+The user initiates a deposit from the frontend by entering an amount and clicking “Fund Wallet.” The frontend sends a request to the backend specifying the user ID and deposit amount. At this point, no money has moved and no balance must change.
+The backend creates a Paystack transaction using either the Initialize Transaction endpoint or a Dedicated Virtual Account assignment. The backend generates a unique internal transaction reference tied to the user ID, amount, and timestamp. This reference is stored in the database with status set to “pending.”
+The backend responds to the frontend with payment instructions. This could be an authorization URL or bank transfer details. The frontend displays these details to the user.
+The user completes the payment via bank transfer or Paystack-supported method. At this stage, the platform still does nothing. No balance is credited. No assumption is made.
+Paystack then sends a webhook event to the HelpChain backend confirming that a payment has been completed. This webhook is the single source of truth. The backend must verify the webhook signature, confirm that the transaction reference exists, confirm that the amount matches exactly, confirm that the transaction has not already been processed, and confirm that the event status is “success.”
+Only after all checks pass does the backend credit the user’s available wallet balance. The transaction status is updated to “completed,” and a wallet transaction record is created for audit purposes.
+Under no circumstances should a wallet be credited before webhook verification. Under no circumstances should frontend confirmation be trusted.
+________________________________________
+INTERNAL WALLET SYSTEM (CRITICAL)
+Each user wallet must exist as a persistent database entity. The wallet must include:
+•	user_id
+•	available_balance
+•	escrow_balance
+•	currency
+•	last_updated
+•	wallet_status (active, restricted, suspended)
+Every balance change must be recorded as a wallet transaction log with:
+•	transaction_id
+•	user_id
+•	type (deposit, escrow_lock, escrow_release, withdrawal, fee, adjustment)
+•	amount
+•	balance_before
+•	balance_after
+•	reference
+•	timestamp
+This log is non-negotiable. It is essential for debugging, disputes, audits, and trust.
+________________________________________
+ESCROW SYSTEM (THE HEART OF HELPCHAIN)
+The escrow system is not a Paystack feature. It is purely internal logic.
+When a help request is created and a helper is assigned, the requester must have sufficient available balance. Once the job is confirmed, the backend moves the agreed job amount from the requester’s available balance into their escrow balance. No Paystack call is made. No money moves externally. This is purely a database operation.
+Escrow funds are locked. They cannot be withdrawn. They cannot be reused. They cannot be touched until the job is resolved.
+When a job is completed successfully and confirmed by the requester (or auto-confirmed after a timeout), the escrowed amount is released. The backend deducts the escrow amount from the requester’s escrow balance and credits the helper’s available balance minus platform fees.
+If a dispute is raised, escrow funds remain locked until an admin or dispute resolution logic determines the outcome.
+Escrow release must always be an atomic operation. Partial releases must be deliberate and logged.
+________________________________________
+PLATFORM FEES AND COMMISSIONS
+HelpChain may deduct a service fee from completed jobs. This fee must be calculated at escrow release time. Fees must never be taken from deposits or withdrawals without explicit logic.
+Fees must be recorded as separate ledger entries and reflected in an internal platform revenue account, not mixed with user wallets.
+________________________________________
+WITHDRAWAL FLOW (DETAILED)
+When a user requests a withdrawal, the frontend sends a withdrawal request to the backend specifying the amount.
+The backend checks:
+•	User identity verification status
+•	Available balance sufficiency
+•	Escrow balance equals zero or unaffected
+•	No active disputes or restrictions
+•	Withdrawal limits and cooldowns
+If approved, the backend creates a Paystack transfer recipient if not already created. Then it initiates a transfer using the Paystack Transfers API. The withdrawal status is marked as “processing.”
+Paystack sends a webhook confirming transfer success or failure. Only upon confirmation does the backend deduct the amount from the user’s available balance and mark the withdrawal as “completed.” Failed withdrawals must be retried or reverted safely.
+Withdrawals must never deduct balance before Paystack confirmation.
+________________________________________
+SECURITY AND SAFETY RULES
+All sensitive operations must be backend-only. API keys must never be exposed. Webhooks must be verified. Idempotency keys must be used to prevent double processing. Rate limiting must be applied to withdrawals and deposits. Every balance change must be logged. Admin override actions must be traceable.
+The system must assume users may attempt fraud. Therefore, the system must be conservative, not optimistic.
+________________________________________
+WHAT MUST EXIST IN THE SYSTEM
+•	Wallet model
+•	Wallet transaction ledger
+•	Deposit records
+•	Withdrawal records
+•	Escrow records
+•	Dispute records
+•	Platform revenue account
+•	Admin review tools
+•	Webhook verification logic
+•	Error handling and rollback logic
+Nothing should be built partially. Nothing should be left implicit.
+________________________________________
+WHAT MUST NOT EXIST
+•	Direct Paystack balance reads for user wallets
+•	Frontend-controlled balance updates
+•	Emoji-based UI indicators instead of icons
+•	Hardcoded fees
+•	Auto-credit without webhook verification
+•	Manual dashboard-based reconciliation
+________________________________________
+FINAL INSTRUCTION TO REPLIT AGENT
+This platform must be built slowly, carefully, and modularly. Payment logic must be tested thoroughly using Paystack test mode before live deployment. The escrow system must be simulated with multiple users and edge cases. Every assumption must be questioned. If any part of this document is unclear, the agent must ask for clarification before implementation.
+At the end of implementation planning, the agent should summarize their understanding of:
+•	How deposits work
+•	How wallets work
+•	How escrow works
+•	How withdrawals work
+•	Where money lives at every stage
+Only after that confirmation should actual implementation begin.
+
+
+
+
+
+
+
+
+HELPCHAIN DETAILED DESIGN AND FUNCTIONAL BRIEF FOR REPLIT
+1. Platform Overview
+HelpChain is a real-world service marketplace platform connecting users who need tasks completed with other users who can provide help. The core focus is:
+•	Real-world usability: bridging tasks and service providers.
+•	Secure financial transactions.
+•	Trust, verification, and accountability.
+•	Transparency and professionalism.
+Every action on HelpChain must prioritize trust, simplicity, and usability, ensuring users can operate seamlessly, verify themselves, complete transactions, and monitor their interactions.
+________________________________________
+2. User Verification System (FULL BREAKDOWN)
+2.1 Account Verification
+•	Upon signup, users provide email and password.
+•	System sends a one-time email verification link.
+o	Expiration: 15–30 minutes.
+o	Token storage: hashed for security.
+•	Users cannot proceed to create tasks, offer help, or access wallet until email is verified.
+•	System should show real-time verification status at the top of the user dashboard:
+o	“You have not verified your email” with a clickable prompt.
+o	Status indicators for each verification level: email, phone, ID, KYC, 2FA.
+________________________________________
+2.2 Contact Verification (Phone)
+•	OTP sent via SMS.
+•	OTP expires in 5 minutes.
+•	Maximum attempts allowed; system locks after too many failed attempts.
+•	One phone number per account.
+•	Phone verification enables:
+o	Task creation.
+o	Messaging when initiating a transaction.
+o	P2P payment interactions.
+________________________________________
+2.3 Security Verification (2FA)
+•	Must support Google Authenticator and Apple Authenticator (TOTP standard).
+•	Users generate 2FA secret, scan QR, input first code to activate.
+•	Store 2FA secrets encrypted.
+•	Required for:
+o	Withdrawals.
+o	Changing bank/payment details.
+o	Admin-sensitive actions.
+•	Recovery codes generated and hashed; users must download/store safely.
+________________________________________
+2.4 Financial Verification / KYC
+•	Progressive verification:
+o	Optional for browsing and small interactions.
+o	Required for withdrawals, large transactions, flagged accounts.
+•	Acceptable documents:
+o	BVN
+o	National ID (NIN)
+o	Passport
+o	Voter’s card
+•	Upload flow:
+o	User uploads document.
+o	System scans for authenticity and stores securely.
+o	Status updates in dashboard: Verified / Pending / Failed.
+•	Must comply with local regulations regarding data storage and privacy.
+•	User must see verification prompts clearly in their dashboard:
+o	Example: “You have not completed KYC; submit BVN or ID to unlock withdrawals.”
+________________________________________
+2.5 Public Trust Indicators
+•	Trust verification represents account credibility.
+•	Includes:
+o	Number of completed help requests.
+o	Past successful transactions.
+o	Public profile ratings (only visible when at least one rating exists).
+o	All data reflects real performance, not estimations.
+•	Public profile shows this information to encourage confidence among users.
+________________________________________
+3. Profile System
+HelpChain has dual profiles:
+3.1 Personal Account Profile
+•	Visible only to the user.
+•	Includes:
+o	Personal information.
+o	Bank/payment methods.
+o	Wallet balance and transaction history.
+o	Settings (notifications, 2FA, contact info, etc.)
+•	Prompts users for incomplete verification and missing details.
+•	Mobile and desktop views must be optimized for usability.
+3.2 Public Profile
+•	Displays information viewable by others when interacting with a user.
+•	Information includes:
+o	Name, profile picture, location.
+o	Past completed tasks.
+o	Ratings and reviews (only if available).
+o	Tasks posted / completed count.
+•	Messaging only enabled via transactions (e.g., task initiation, P2P payment).
+•	Public profile should never expose sensitive info: email, phone, wallet info, exact earnings.
+•	Profile picture appears everywhere the user appears: public tasks, messages, comments.
+________________________________________
+4. Notifications System
+•	Every user action relevant to a user triggers a notification:
+o	New message.
+o	Profile viewed.
+o	Transaction updates.
+o	Ratings and reviews.
+•	Notifications stored with full context (timestamp, user initiating action, affected entities).
+•	Desktop: access via bell icon; option to expand full notifications page.
+•	Mobile: accessible via dedicated notifications tab; optimized UI/UX for limited screen size.
+•	Must allow real-time push updates and historical tracking.
+________________________________________
+5. Payment System (THE CORE OF HELPCHAIN)
+5.1 Overview
+Payments are central to HelpChain. The system must:
+•	Handle escrow, deposits, withdrawals.
+•	Reflect balances accurately in real-time.
+•	Record every transaction in detail (who, what, when, status, amounts).
+•	Prevent fraud, manipulation, and unauthorized transfers.
+________________________________________
+5.2 Deposit Flow
+1.	User selects Deposit via Bank / Paystack.
+2.	User initiates deposit:
+o	Input amount.
+o	Choose payment method.
+o	Backend generates transaction reference ID.
+3.	User completes transaction:
+o	Bank transfer or card payment.
+o	Paystack (or other PSP) validates transaction.
+4.	Backend verifies deposit:
+o	Webhook or API call from Paystack confirms transaction.
+o	User balance updated automatically.
+5.	Notifications:
+o	Deposit successful / pending / failed.
+o	Display full transaction details in wallet.
+6.	Escrow rules:
+o	Funds remain in escrow if tied to a task.
+o	Only released upon task completion or mutual agreement.
+________________________________________
+5.3 Withdrawal Flow
+1.	User requests withdrawal.
+2.	User must have verified KYC and 2FA enabled.
+3.	System checks:
+o	Available balance.
+o	Pending tasks (cannot withdraw funds in escrow).
+4.	Backend initiates transfer:
+o	Use Paystack transfer API (or bank API if direct).
+o	Transaction reference generated.
+5.	Notifications sent for:
+o	Request received.
+o	Processing started.
+o	Success / failure.
+6.	Wallet updates in real-time.
+________________________________________
+5.4 Escrow Logic
+•	Funds are never released until tasks are confirmed complete.
+•	Automatic escrow release occurs when:
+o	Task marked as complete.
+o	No dispute within X hours/days.
+•	Dispute system integration:
+o	Funds frozen until dispute resolved.
+o	Admin or AI can mediate.
+•	Each transaction (deposit, escrow hold, release, withdrawal) logged with full metadata.
+________________________________________
+5.5 Wallet / Transaction Reporting
+•	Transaction history:
+o	Date/time
+o	Sender / receiver
+o	Amount
+o	Type: deposit, withdrawal, escrow, release
+o	Status: pending, success, failed
+•	Ability to report transactions for audit or disputes.
+•	Notifications mirror wallet activity.
+________________________________________
+6. Authentication Options
+6.1 Google & Apple Sign-In
+•	Requires OAuth integration.
+•	Backend needs:
+o	API keys from Google / Apple developer console.
+o	Callback URLs configured.
+•	Flow:
+o	User clicks “Continue with Google/Apple”.
+o	OAuth handles authentication.
+o	Backend fetches user info (email, name, profile picture).
+o	New accounts auto-created or existing account matched.
+•	Ensures streamlined onboarding without manual entry.
+6.2 Standard Email/Password
+•	For users preferring not to use OAuth.
+•	Verification and 2FA optional at signup, mandatory at sensitive actions.
+________________________________________
+7. UX / UI Guidelines
+•	Home page hero section must occupy full screen on load.
+o	No preview of next section at page load.
+o	Slight scroll reveals next section.
+•	Responsive design mandatory:
+o	Desktop and mobile views optimized independently.
+o	Layouts, button sizes, font, interactions adjusted per device.
+•	Notification badges, status indicators, and profile prompts visible on all screens.
+•	Emojis should never replace icons.
+o	Use vector icons or small graphics.
+•	Color palette: consider blue inspiration from Ataxa.
+________________________________________
+8. Profile / Task Interactions
+•	Public profiles:
+o	Viewable by anyone for transparency.
+o	Task and transaction history visible with limits (no sensitive info exposed).
+•	Messaging restricted to transaction-related actions only.
+•	Task requests display:
+o	User profile snapshot.
+o	Ratings (if available).
+o	Tasks posted / completed.
+o	Option to initiate transaction.
+•	No hidden ratings or fake indicators.
+________________________________________
+9. Reporting & Administration
+•	Users can report transactions, tasks, or other users.
+•	System logs all actions with timestamps.
+•	Admin panel allows:
+o	Viewing wallet and transaction histories.
+o	Overseeing disputes and KYC verifications.
+o	Adjusting user status (suspended, restricted, banned).
+________________________________________
+10. Deliverables for Replit Agent
+•	Implement verification layers: email, phone, 2FA, KYC.
+•	Design dual profiles: personal and public.
+•	Full-feature notification system.
+•	Payment system with escrow logic, real-time balance updates, wallet transaction logging.
+•	OAuth login (Google / Apple).
+•	Responsive UI for desktop and mobile.
+•	Prompts for users on verification completion and missing details.
+•	Public profiles fully functional with ratings and completed task display.
+•	Hero section fullscreen on homepage.
+•	All icons and interface elements professional (no emojis in place of icons).
+•	Notifications must be complete, context-rich, and mobile-friendly.
+Transactions must be fully auditable and reportable.
+
+
+
+FIRST: WHAT “VERIFICATION” MEANS FOR HELPCHAIN
+Verification on HelpChain is not one thing.
+It’s a layered system. Each layer unlocks more trust and more permissions.
+Think of it like doors in a building.
+You don’t need to open all doors at once.
+But each door exists for a reason.
+HelpChain should have FOUR CORE VERIFICATION LAYERS:
+1.	Account verification (basic identity)
+2.	Contact verification (email & phone)
+3.	Security verification (2FA)
+4.	Financial / trust verification (KYC + behavior)
+Each layer protects a different risk.
+________________________________________
+LAYER 1: ACCOUNT VERIFICATION (FOUNDATION)
+This is the very first level.
+No money. No jobs. Just “are you a real person with a stable account?”
+What this includes
+•	Email verification
+•	Username uniqueness
+•	Password setup
+How it works (flow)
+User signs up
+→ Enters email + password
+→ Backend creates account with status = unverified
+→ Verification email is sent
+→ User clicks link
+→ Backend marks email as verified
+Important rules
+•	No verified email = no actions beyond browsing
+•	Email verification link must:
+o	Expire (e.g. 15–30 minutes)
+o	Be one-time-use
+•	Store verification tokens hashed, not raw
+This step alone stops:
+•	Bots
+•	Spam accounts
+•	Fake signups
+________________________________________
+LAYER 2: CONTACT VERIFICATION (PHONE NUMBER)
+This is where HelpChain starts feeling real-world serious.
+Why phone verification matters
+HelpChain connects people physically and financially.
+A phone number is:
+•	A friction point
+•	A recovery channel
+•	A trust signal
+How it works
+User adds phone number
+→ Backend sends OTP (via SMS provider)
+→ User enters OTP
+→ Backend verifies and stores phone as confirmed
+Rules
+•	One phone number per account
+•	Rate-limit OTP requests
+•	OTP expires (e.g. 5 minutes)
+•	Lock verification after too many failed attempts
+What this unlocks
+•	Messaging other users
+•	Offering help
+•	Creating help requests
+Without phone verification, users should be read-only.
+________________________________________
+LAYER 3: SECURITY VERIFICATION (2FA – VERY IMPORTANT)
+This protects money. Period.
+What you should support
+•	Google Authenticator
+•	Apple Authenticator (same TOTP standard)
+You don’t need anything custom.
+Use standard TOTP (Time-based One-Time Password).
+________________________________________
+How 2FA setup works (step by step)
+User goes to “Security Settings”
+→ Clicks “Enable 2FA”
+→ Backend generates a secret key
+→ Backend shows QR code
+→ User scans with authenticator app
+→ User enters first 6-digit code
+→ Backend verifies code
+→ 2FA enabled
+What to store
+•	Hashed 2FA secret (or encrypted)
+•	2FA status = enabled/disabled
+•	Backup recovery codes (hashed)
+When 2FA is REQUIRED
+•	Withdrawals
+•	Changing bank details
+•	Dispute actions
+•	Admin-sensitive actions
+•	Login from new device (optional but recommended)
+Why this matters
+Even if someone:
+•	Steals a password
+•	Hijacks email
+They still cannot move money.
+This is non-negotiable for HelpChain.
+________________________________________
+LAYER 4: FINANCIAL & TRUST VERIFICATION (KYC + BEHAVIOR)
+This is where things get serious.
+HelpChain does not need full KYC immediately for everyone.
+That’s expensive and user-hostile.
+Instead, use progressive verification.
+________________________________________
+A. BASIC KYC (MINIMUM)
+Required when:
+•	User wants to withdraw
+•	User crosses a transaction threshold
+•	User is flagged by system
+What this includes
+•	Full name
+•	Date of birth
+•	Government ID (via Paystack or KYC provider)
+•	Selfie verification (if supported)
+•	
+
+
+¬¬¬¬¬FIRST: WHAT “VERIFICATION” MEANS FOR HELPCHAIN
+Verification on HelpChain is not one thing.
+It’s a layered system. Each layer unlocks more trust and more permissions.
+Think of it like doors in a building.
+You don’t need to open all doors at once.
+But each door exists for a reason.
+HelpChain should have FOUR CORE VERIFICATION LAYERS:
+1.	Account verification (basic identity)
+2.	Contact verification (email & phone)
+3.	Security verification (2FA)
+4.	Financial / trust verification (KYC + behavior)
+Each layer protects a different risk.
+________________________________________
+LAYER 1: ACCOUNT VERIFICATION (FOUNDATION)
+This is the very first level.
+No money. No jobs. Just “are you a real person with a stable account?”
+What this includes
+•	Email verification
+•	Username uniqueness
+•	Password setup
+How it works (flow)
+User signs up
+→ Enters email + password
+→ Backend creates account with status = unverified
+→ Verification email is sent
+→ User clicks link
+→ Backend marks email as verified
+Important rules
+•	No verified email = no actions beyond browsing
+•	Email verification link must:
+o	Expire (e.g. 15–30 minutes)
+o	Be one-time-use
+•	Store verification tokens hashed, not raw
+This step alone stops:
+•	Bots
+•	Spam accounts
+•	Fake signups
+________________________________________
+LAYER 2: CONTACT VERIFICATION (PHONE NUMBER)
+This is where HelpChain starts feeling real-world serious.
+Why phone verification matters
+HelpChain connects people physically and financially.
+A phone number is:
+•	A friction point
+•	A recovery channel
+•	A trust signal
+How it works
+User adds phone number
+→ Backend sends OTP (via SMS provider)
+→ User enters OTP
+→ Backend verifies and stores phone as confirmed
+Rules
+•	One phone number per account
+•	Rate-limit OTP requests
+•	OTP expires (e.g. 5 minutes)
+•	Lock verification after too many failed attempts
+What this unlocks
+•	Messaging other users
+•	Offering help
+•	Creating help requests
+Without phone verification, users should be read-only.
+________________________________________
+LAYER 3: SECURITY VERIFICATION (2FA – VERY IMPORTANT)
+This protects money. Period.
+What you should support
+•	Google Authenticator
+•	Apple Authenticator (same TOTP standard)
+You don’t need anything custom.
+Use standard TOTP (Time-based One-Time Password).
+________________________________________
+How 2FA setup works (step by step)
+User goes to “Security Settings”
+→ Clicks “Enable 2FA”
+→ Backend generates a secret key
+→ Backend shows QR code
+→ User scans with authenticator app
+→ User enters first 6-digit code
+→ Backend verifies code
+→ 2FA enabled
+What to store
+•	Hashed 2FA secret (or encrypted)
+•	2FA status = enabled/disabled
+•	Backup recovery codes (hashed)
+When 2FA is REQUIRED
+•	Withdrawals
+•	Changing bank details
+•	Dispute actions
+•	Admin-sensitive actions
+•	Login from new device (optional but recommended)
+Why this matters
+Even if someone:
+•	Steals a password
+•	Hijacks email
+They still cannot move money.
+This is non-negotiable for HelpChain.
+________________________________________
+LAYER 4: FINANCIAL & TRUST VERIFICATION (KYC + BEHAVIOR)
+This is where things get serious.
+HelpChain does not need full KYC immediately for everyone.
+That’s expensive and user-hostile.
+Instead, use progressive verification.
+________________________________________
+A. BASIC KYC (MINIMUM)
+Required when:
+•	User wants to withdraw
+•	User crosses a transaction threshold
+•	User is flagged by system
+What this includes
+•	Full name
+•	Date of birth
+•	Government ID (via Paystack or KYC provider)
+•	Selfie verification (if supported)
+
+
+
+

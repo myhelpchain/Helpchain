@@ -1,0 +1,205 @@
+Before making any changes:
+
+Read and understand the entire project completely.
+
+Analyze:
+
+* all files
+* all components
+* all routes
+* all functions
+* all existing workflows
+* all UI structures
+* all animations
+* all state management
+* all navigation systems
+* all current mobile layouts
+
+Do not start redesigning immediately.
+
+First understand exactly how the application works and ensure the application preview still runs correctly.
+
+After understanding the project, I want a complete premium UI/UX overhaul for the mobile application.
+
+This is NOT a feature update.
+
+This is a full visual and interaction redesign.
+
+The goal:
+
+Transform the application from:
+
+"MVP/mobile website"
+
+into:
+
+"premium modern mobile application"
+
+The application should feel polished and premium immediately after opening.
+
+Use modern mobile design principles.
+
+Prioritize quality over speed.
+
+Requirements:
+
+1. Premium visual language
+
+Use a clean modern visual system:
+
+* soft rounded corners
+* spacing consistency
+* depth
+* layered UI
+* clean cards
+* modern shadows
+* smooth gradients
+* subtle glassmorphism where appropriate
+* modern bubble-like visual effects similar to recent iOS design language
+
+Do NOT overuse effects.
+
+Keep everything clean and premium.
+
+2. Remove clutter
+
+Reduce visual noise.
+
+Avoid:
+
+* excessive lines
+* too much text on one screen
+* hard borders everywhere
+* box-heavy layouts
+* old website patterns
+
+Create breathing space.
+
+3. Motion system
+
+Create a complete motion experience.
+
+Add:
+
+* smooth page transitions
+* button feedback animations
+* fade effects
+* slide effects
+* subtle scaling effects
+* loading animations
+* card appearance animations
+
+Do not instantly switch pages.
+
+Everything should feel fluid.
+
+4. iPhone-style transition behavior
+
+Navigation should feel natural.
+
+Examples:
+
+* pages slide naturally
+* screens animate in and out smoothly
+* transitions should feel like layers moving
+* support gesture-style navigation where possible
+* back navigation should feel fluid
+
+Avoid:
+
+abrupt page changes
+
+5. Splash and startup experience
+
+Improve startup flow.
+
+When application opens:
+
+Show:
+
+* HelpChain logo
+* premium animation
+* smooth transition
+* high-quality motion
+
+Then transition naturally into onboarding or home flow.
+
+6. Buttons and interactions
+
+Buttons should feel alive.
+
+Add:
+
+* subtle press animations
+* feedback when tapped
+* scaling or motion response
+* smooth hover/press states where applicable
+
+Interactions should feel responsive.
+
+7. Home screen redesign
+
+Redesign the home experience.
+
+Prioritize:
+
+* simplicity
+* visual hierarchy
+* modern appearance
+* easy navigation
+
+Do not overload users.
+
+8. Bottom navigation redesign
+
+Bottom navigation should feel premium.
+
+Tabs:
+
+* Home
+* Tasks
+* Create
+* Messages
+* Profile
+
+Use:
+
+* smooth active states
+* animated icon changes
+* subtle movement
+
+9. Research before implementing
+
+Study modern application patterns from:
+
+* Apple iOS apps
+* Airbnb
+* Instagram
+* X/Twitter
+* Discord
+* Linear
+* Notion mobile
+
+Do NOT copy them.
+
+Only use them as inspiration for:
+
+* interaction behavior
+* spacing
+* motion
+* polish
+* user experience
+
+10. Main goal
+
+When someone opens the application the reaction should feel like:
+
+"This feels polished and premium"
+
+instead of:
+
+"This looks like a basic website wrapped inside an app"
+
+Take time before implementation.
+
+Think carefully and redesign with attention to detail.

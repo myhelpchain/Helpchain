@@ -1,0 +1,162 @@
+I need you to fully analyze and understand this entire project before making changes.
+
+Read and understand:
+
+* all files
+* all functions
+* all components
+* all routes
+* all UI structures
+* all existing logic
+* all current workflows
+* how the platform currently works
+* what features already exist
+* relationships between components
+
+Do not modify anything before fully understanding the application.
+
+After understanding everything, confirm that the application preview still runs correctly and that nothing is broken.
+
+Now after analysis, I want a complete MOBILE-FIRST application redesign.
+
+Important:
+
+I am NOT asking for a WebView wrapper.
+
+Capacitor already handles Android and iOS wrapping.
+
+I am asking for the actual interface and user experience to behave like a real mobile application.
+
+The current design still behaves like a website placed inside an app container.
+
+I want it redesigned as a native-feeling mobile experience.
+
+Requirements:
+
+1. Splash screen
+
+When opening the app:
+
+* show HelpChain logo
+* show smooth animation
+* duration around 2–3 seconds
+* transition smoothly into onboarding
+
+2. Onboarding flow
+
+Create 3–4 onboarding screens.
+
+Each screen should have:
+
+* illustration or motion animation
+* short title
+* short description
+* Next button
+* Skip button
+
+Examples:
+
+Screen 1:
+"Get help fast"
+
+Screen 2:
+"Earn by helping others"
+
+Screen 3:
+"Connect and complete tasks"
+
+Last screen:
+
+"Start your journey"
+
+Button:
+
+Get Started
+
+3. Authentication flow
+
+After onboarding:
+
+Show:
+
+* Login
+* Sign up
+
+Mobile style layout only.
+
+4. Remove website structure completely
+
+Do NOT use:
+
+* website headers
+* website footers
+* top website navigation
+* large desktop layouts
+* desktop menus
+* web-style sections
+
+The application should not feel like a website.
+
+5. Mobile navigation structure
+
+Create bottom navigation similar to modern mobile apps.
+
+Bottom tabs:
+
+Home
+Tasks
+Create
+Messages
+Profile
+
+Fixed at bottom.
+
+6. Profile menu
+
+Do not use dropdown menus.
+
+Settings and extra options should appear from:
+
+Profile
+→ Side drawer or profile page
+
+7. Mobile-first responsive design
+
+Prioritize mobile design completely.
+
+The mobile experience is the primary product.
+
+Desktop/web can adapt later.
+
+8. Study modern mobile applications for layout behavior
+
+Reference patterns from:
+
+* X (Twitter)
+* Instagram
+* Airbnb
+* Discord
+* Fiverr mobile app
+
+Do NOT copy their design.
+
+Only use them for:
+
+* spacing
+* navigation patterns
+* mobile interaction behavior
+* app flow
+
+9. Goal
+
+The final result should feel like:
+
+"A real native mobile application"
+
+and NOT:
+
+"A website wrapped inside an app"
+
+Take time before implementing.
+
+Think through the structure first and then execute carefully.

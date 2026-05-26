@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "incremental": true,
+    "jsx": "react-jsx",
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "paths": {
+      "@/*": ["./client/src/*"],
+      "@assets/*": ["./attached_assets/*"]
+    },
+    "skipLibCheck": true,
+    "strict": true,
+    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
+    "types": ["node", "vite/client"]
+  },
+  "exclude": ["node_modules", "build", "dist"],
+  "include": ["client/src/**/*", "src/**/*"]
+}

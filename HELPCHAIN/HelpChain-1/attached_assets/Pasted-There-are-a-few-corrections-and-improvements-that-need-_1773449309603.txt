@@ -1,0 +1,108 @@
+There are a few corrections and improvements that need to be made to the current version of the application. Please carefully implement the following updates:
+
+---
+
+**1. Remove the “Locale / Global” Button**
+
+There is a button in the interface labeled **“Locale”** which switches to **“Global”** when clicked.
+
+This feature is **not needed for the application at this stage**.
+
+Please **remove this button completely from the platform**, including any related functionality connected to it.
+
+---
+
+**2. Profile Pictures (Use Image Placeholders)**
+
+User profiles should **not be represented by icons**.
+
+Instead, every user profile must display a **profile picture**.
+
+For now, please use **placeholder profile images** until real users upload their own photos.
+
+Anywhere a user appears in the interface (profile pages, task posters, user cards, etc.), the system should display **a profile image placeholder instead of an icon**.
+
+This makes the platform feel more human and realistic.
+
+---
+
+**3. Task Listings Must Include Images**
+
+Every task displayed on the **Find Tasks page** must include an **image inside the task card/container**.
+
+However, tasks are divided into two major types, and the image handling should reflect that:
+
+### Physical Tasks
+
+These are tasks that require someone to be **physically present**.
+
+Examples:
+
+* Fixing a laptop
+* Moving furniture
+* Repairing something
+* Cleaning something
+* Picking up an item
+
+For **physical tasks**, the person posting the task **must take a photo of the item or situation and upload it**.
+
+Example scenario:
+If someone wants help fixing a laptop, they should **snap a picture of the laptop and upload it when creating the task**.
+
+So for **physical tasks**, uploading a real image should be **required**.
+
+---
+
+### Remote Tasks
+
+These are tasks that **do not require physical presence**.
+
+Examples:
+
+* Designing a logo
+* Writing something
+* Doing research
+* Solving a digital problem
+
+For **remote tasks**, the user can either:
+
+1. Upload their own image (optional), or
+2. The platform can **automatically fetch a relevant image online** to represent that task.
+
+This image simply acts as a **visual representation of the task**.
+
+So remote tasks are **more flexible with images**, while physical tasks **require a real uploaded photo**.
+
+---
+
+**4. Improve the Landing Page with Images**
+
+The landing page currently looks professional, but it needs **visual elements to make it feel more engaging**.
+
+Please add suitable images to key sections of the landing page, including:
+
+* The **main hero section**
+* Sections explaining how the platform works
+* Feature highlights
+
+You can use **placeholder illustrations or images for now**, but they should visually represent the concept of people helping each other with tasks.
+
+---
+
+**5. Add Color Tags for Task Categories**
+
+Tasks should include **colored labels or tags** to represent different categories.
+
+For example:
+
+* **Physical Help** – one color
+* **Remote Tasks** – another color
+* Other categories – different colors
+
+These colors help users **quickly identify the type of task at a glance**.
+
+The colors do not necessarily need to represent urgency, but they should **visually distinguish the categories** to improve usability and organization.
+
+---
+
+Please implement these updates first. Once these changes are complete, we can proceed to the next round of improvements.

@@ -1,0 +1,362 @@
+I want you to work on this project called HelpChain by following this instruction exactly in the same order it is written. Do not skip steps, do not rearrange the order, and do not jump ahead. First understand the current codebase deeply, then improve it carefully. This is not a fresh rebuild from zero unless absolutely necessary. Treat the current project as an existing serious draft that must be audited, stabilized, cleaned up, and evolved into a real production-ready platform.
+
+HelpChain is a task marketplace where users can post tasks and workers can accept and complete them for payment. The platform is meant to support both Local Tasks and Remote Tasks. Local Tasks are physical tasks that require presence, like helping carry loads, fixing something in a house, repairs, deliveries, and in-person assistance. Remote Tasks are tasks that can be done online, like design, writing, research, tutoring, digital help, coding help, editing, and similar services. The platform must feel modern, trustworthy, smooth, mobile-friendly, and scalable. The long-term direction includes real payments, escrow, notifications, email flows, and eventually Android app readiness. Right now, the most important thing is to make the current codebase solid and aligned.
+
+Your job is to carefully inspect the current HelpChain codebase and then improve it in phases. I want you to follow the phases below exactly.
+
+PHASE 1: FULL CODEBASE AUDIT AND UNDERSTANDING
+
+Before changing anything important, go through the entire codebase and understand exactly what already exists. Read the whole app structure, routes, pages, components, services, hooks, stores, auth flows, payment flows, task flows, wallet logic, messaging logic, admin logic, backend functions, config files, environment usage, deployment setup, and external integrations.
+
+You must first identify and document:
+1. What currently works fully
+2. What partially works
+3. What is only UI and mock data
+4. What is placeholder logic
+5. What is production-ready
+6. What is not safe for production
+7. What parts should be preserved
+8. What parts should be replaced or rewritten
+
+Do not assume the current app is either fully good or fully bad. Treat it as an evolving product. Preserve what is useful and remove what is misleading, unfinished, insecure, or fake.
+
+After auditing, create a clear internal map of the codebase:
+- Authentication system
+- User onboarding system
+- Landing page
+- Dashboard
+- Profile
+- Wallet
+- Task creation
+- Task browsing
+- Task details
+- Applications or offers flow
+- Messaging
+- Notifications
+- Admin panel
+- Payment APIs
+- Withdrawal logic
+- Escrow logic
+- Backend database and edge/serverless functions
+- Deployment config
+
+PHASE 2: FIX THE MOST CRITICAL PRODUCTION PROBLEMS FIRST
+
+Do not start by redesigning the UI. First fix the most important production blockers.
+
+The first and highest-priority issue is backend security and authentication validation. If the backend is decoding tokens or trusting client-provided identity without proper verification, that must be corrected before anything else. I want proper backend-side auth validation and secure user identity checks for all sensitive actions including wallet operations, task creation, withdrawals, escrow actions, notifications, profile updates, and admin-level actions.
+
+Make sure all protected backend routes or functions properly verify the user identity in a secure way instead of just decoding payloads and trusting them blindly.
+
+Then review all environment variable usage and secrets handling. Make sure no sensitive values are exposed incorrectly on the client. Clean up configuration and ensure production-safe patterns are used.
+
+Then review money-related flows:
+- deposits
+- wallet reads
+- transaction history
+- escrow movement
+- withdrawals
+- account verification
+- any bank or payment initialization
+- any blockchain-related actions
+
+For any money flow that is fake, unsafe, inconsistent, or misleading, either clearly separate it as mock/dev-only or rebuild it properly.
+
+PHASE 3: ALIGN THE PRODUCT LOGIC WITH THE REAL HELPCHAIN VISION
+
+The current product may have logic mismatches. Fix that next.
+
+HelpChain’s correct product flow should be aligned to this logic unless the code clearly needs a better version:
+1. A client creates a task
+2. Workers can apply, offer, or express interest
+3. The client reviews applicants
+4. The client selects a worker
+5. The task payment is then locked into escrow at the correct stage
+6. The worker completes the task
+7. The client approves completion
+8. The money is released
+9. In case of conflict, dispute handling exists
+
+Do not leave the app in a confusing state where the UI suggests one flow but the backend actually follows another flow. Make the task flow consistent across frontend and backend.
+
+HelpChain must support two task types:
+- Local Task: requires physical presence and location-based relevance
+- Remote Task: can be completed online from anywhere
+
+Make the system reflect this clearly in task creation, browsing, filtering, task detail screens, and user understanding.
+
+Task creation should include the right structure:
+- title
+- description
+- task type: Local or Remote
+- budget
+- deadline
+- category
+- optional location for local tasks
+- optional attachments
+- optional special instructions
+
+If there is an existing applications system or offers system, make it clear and consistent. Workers should be able to show interest properly, and clients should be able to review and choose properly.
+
+PHASE 4: REMOVE MOCK / FAKE / MISLEADING SYSTEMS OR MARK THEM CLEARLY
+
+I do not want a platform that looks real on the surface but is actually powered by fake flows underneath. Audit all areas using:
+- hardcoded data
+- localStorage persistence for critical product logic
+- sample conversations
+- fake reviews
+- fake balances
+- seeded placeholders pretending to be live production data
+
+For each such case, do one of the following:
+1. Replace it with real connected backend logic if it belongs in the MVP
+2. Clearly isolate it as development-only mock data if it is not yet being implemented
+3. Remove it if it damages clarity or trust
+
+Messaging is especially important. If the current messaging system is only sample data, do not pretend it is complete. Either implement a real backend-backed messaging system or clearly restructure the product so it is not misleading.
+
+The same applies to notifications, activity feeds, reviews, and support forms.
+
+PHASE 5: DEFINE AND BUILD THE REAL MVP CORE
+
+After the audit and critical cleanup, focus the app on a real MVP instead of too many scattered half-finished features.
+
+The real MVP of HelpChain should revolve around this flow:
+- user sign up / login
+- onboarding
+- browse tasks
+- create tasks
+- apply to tasks or accept tasks depending on user role
+- client selects worker
+- escrow locks payment
+- worker completes task
+- client releases payment
+- wallet reflects result
+- user receives relevant notification
+
+That flow must be excellent.
+
+Prioritize this over adding too many extra features.
+
+The core MVP sections that must feel real and stable are:
+1. Landing page
+2. Authentication
+3. Onboarding
+4. Task marketplace
+5. Task detail
+6. Application / selection flow
+7. Wallet and payments
+8. Notifications
+9. Profile / reputation basics
+
+PHASE 6: WALLET AND PAYMENTS SYSTEM REBUILD / HARDENING
+
+The wallet system is one of the most important parts of HelpChain.
+
+I want a strong wallet architecture with:
+- available balance
+- escrowed balance
+- transaction history
+- deposit flow
+- withdrawal flow
+- clear statuses
+- good error states
+- safe backend enforcement
+
+If current payment integrations exist, inspect them carefully. Make sure deposit initialization, verification, and withdrawal logic are not loosely connected or vulnerable.
+
+The wallet UI must be trustworthy and clear. It should not confuse users. It should clearly separate:
+- available funds
+- funds in escrow
+- pending transactions
+- completed transactions
+
+Make the transaction history structured and useful.
+
+If crypto or Solana-related logic currently exists, do not force fake on-chain behavior into the product if it is not complete. If blockchain support is part of the roadmap, structure it cleanly as progressive enhancement. The app can support invisible Web3 later, but the immediate code must not pretend a crypto flow is complete if it is not.
+
+If blockchain UI is present, either:
+- complete it properly, or
+- label it properly as not yet active, or
+- reduce it until it is real
+
+PHASE 7: NOTIFICATIONS, EMAILS, AND PRODUCT COMMUNICATION FLOWS
+
+HelpChain must eventually feel like a real product. That means users should not be lost after actions.
+
+Review and implement proper notification and communication flows for important events such as:
+- account created
+- verification email sent
+- onboarding completed
+- task created
+- task application received
+- worker selected
+- payment moved to escrow
+- task marked complete
+- payment released
+- withdrawal requested
+- withdrawal completed
+- dispute created
+- dispute resolved
+
+If email support exists, wire it properly. If not yet implemented, create the structure for it cleanly.
+
+Notifications inside the app should not be random or fake. They should reflect real events from the backend.
+
+PHASE 8: ADMIN AND MODERATION FOUNDATIONS
+
+If an admin page already exists, review it and strengthen it.
+
+Admin features should eventually help with:
+- user oversight
+- task moderation
+- support review
+- dispute review
+- payout monitoring
+- suspicious activity review
+
+Do not overbuild the admin side, but make the foundation sensible and production-aware.
+
+PHASE 9: COMPLETE UI AND UX OVERHAUL ONLY AFTER LOGIC IS STABLE
+
+Only after the major product and backend logic are stabilized should you do the UI overhaul.
+
+The current UI must be upgraded significantly. Right now it may look like an unfinished AI-generated product. I want it transformed into a polished modern startup-grade interface.
+
+Before redesigning, study the existing app and understand its purpose. Do not randomly apply templates.
+
+The design direction should be:
+- clean
+- modern
+- highly readable
+- premium
+- responsive
+- fast
+- trustworthy
+- mobile-first
+- visually balanced
+
+The platform must work beautifully on:
+- mobile phones
+- tablets
+- desktop computers
+
+On mobile, it should feel almost like a real app.
+On desktop, it should feel like a serious dashboard product.
+
+Use a strong green brand color as the primary accent if that is the chosen brand direction, balanced with neutral backgrounds and clean typography.
+
+Redesign and improve:
+- landing page
+- onboarding slides
+- login page
+- sign-up page
+- dashboard
+- wallet page
+- task feed
+- task details
+- profile pages
+- settings
+- messaging
+- navigation
+
+The landing page is extremely important and must clearly explain:
+- what HelpChain is
+- who it is for
+- what Local Tasks are
+- what Remote Tasks are
+- how payment works
+- why people should trust it
+
+Make the onboarding flow better and more informative. Add better onboarding slides and information architecture so a new user immediately understands how HelpChain works.
+
+Make login and sign-up pages clean, modern, and trustworthy.
+
+PHASE 10: RESPONSIVE PRODUCT BEHAVIOR
+
+The app must not just “shrink” on mobile. It must behave like a mobile-first product.
+
+Use responsive design properly.
+
+For mobile:
+- bottom navigation if appropriate
+- simplified layouts
+- touch-friendly controls
+- compact task cards
+- strong readability
+- app-like navigation feel
+
+For desktop:
+- sidebars where useful
+- wider layouts
+- multi-panel views where appropriate
+- stronger dashboard organization
+
+Do not build separate codebases if not necessary. Use one well-structured responsive system.
+
+PHASE 11: PREPARE FOR ANDROID-READY FUTURE WITHOUT PRETENDING IT IS ALREADY DONE
+
+I want this app to eventually become an Android application. Keep that future in mind while building now.
+
+That means:
+- strong mobile UX
+- PWA readiness if appropriate
+- clean API structure
+- scalable frontend patterns
+- reusable components
+- no sloppy routing or state structure
+
+Do not claim it is already an Android app unless it really is. But prepare the web app so that conversion to mobile app later is practical.
+
+PHASE 12: DEPLOYMENT, BUILD HEALTH, AND CODE QUALITY
+
+Ensure the project builds cleanly.
+
+Fix:
+- build warnings where meaningful
+- deployment config issues
+- broken routes
+- environment assumptions
+- inconsistent naming
+- unused legacy code where harmful
+- confusing dead code
+- bad state patterns
+
+Keep the codebase maintainable. Refactor where necessary, but do not create unnecessary complexity.
+
+PHASE 13: OUTPUT EXPECTATION
+
+At the end of this process, I want HelpChain to become a much more solid, real, and trustworthy platform.
+
+The end result should be:
+- based on the current codebase, not a careless throwaway rebuild
+- secure enough to continue serious development
+- aligned with the actual HelpChain product vision
+- free from confusing fake/live mixtures
+- visually polished
+- mobile-first
+- easier for a professional developer to continue from
+- structured like a real startup product
+
+IMPORTANT EXECUTION RULES
+
+Follow these instructions in the exact order written.
+Do not start with UI polish before fixing critical logic and security.
+Do not leave fake systems pretending to be real.
+Do not rebuild everything from zero unless absolutely necessary.
+Preserve useful structure where possible.
+Refactor carefully and intentionally.
+Where a feature is incomplete, either complete it properly or clearly reduce it so it is not misleading.
+The final product must feel coherent, not like disconnected pages.
+Think like a senior product engineer cleaning up and advancing a serious startup codebase.
+
+If you need to make implementation decisions, choose the path that best supports:
+- security
+- clarity
+- maintainability
+- MVP focus
+- mobile usability
+- payment trust
+- future scalability
+
+Build and refine HelpChain into a serious platform by following this plan exactly.
